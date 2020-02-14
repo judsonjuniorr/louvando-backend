@@ -8,6 +8,8 @@ class Queue {
   constructor() {
     this.queues = {};
 
+    // eslint-disable-next-line no-console
+    console.log('Queue monitor started.');
     this.init();
   }
 
