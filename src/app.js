@@ -54,8 +54,8 @@ class App {
               port: process.env.REDIS_PORT,
             }),
           }),
-          windowMs: 1000 * 60,
-          max: 20,
+          windowMs: 1000 * 5,
+          max: 5000,
         })
       );
   }
@@ -72,7 +72,7 @@ class App {
 
         return res.status(500).json(errors);
       }
-      return res.statud(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: 'Internal server error' });
     });
   }
 }
