@@ -22,12 +22,10 @@ export default async (req, res, next) => {
     const schema = Yup.object().shape({
       number: Yup.number()
         .nullable()
-        .integer('Apenas numeros são aceitos.')
-        .typeError('Apenas numeros são aceitos.')
         .min(0)
         .max(999)
         .transform((value, originalValue) =>
-          originalValue.trim() === '' ? null : value
+          originalValue === '' || null ? null : value
         ),
       title: Yup.string()
         .min(3)
@@ -53,6 +51,7 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
+    console.log(err);
     return res
       .status(400)
       .json({ error: 'Validation failed', messages: errorMessage(err) });

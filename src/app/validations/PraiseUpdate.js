@@ -23,12 +23,10 @@ export default async (req, res, next) => {
     const schema = Yup.object().shape({
       number: Yup.number()
         .nullable()
-        .integer('Apenas numeros são aceitos.')
-        .typeError('Apenas numeros são aceitos.')
         .min(0)
         .max(999)
         .transform((value, originalValue) =>
-          originalValue.trim() === '' ? null : value
+          originalValue === '' || null ? null : value
         ),
       title: Yup.string().min(3),
       collection_id: Yup.number().test(
