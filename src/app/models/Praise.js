@@ -17,6 +17,12 @@ class Praise extends Model {
     this.addHook('beforeSave', async praise => {
       praise.title = praise.title.toUpperCase();
 
+      const cp =
+        '<p data-f-id="pbf" style="text-align: center; font-size: 14px; margin-top: 30px; opacity: 0.65; font-family: sans-serif;">Powered by <a href="https://www.froala.com/wysiwyg-editor?pb=1" title="Froala Editor">Froala Editor</a></p>';
+
+      praise.lyrics = praise.lyrics.split(cp).join('');
+      praise.chords = praise.chords.split(cp).join('');
+
       praise.raw_lyrics = praise.lyrics
         .split('</p><p>')
         .join(' ')
