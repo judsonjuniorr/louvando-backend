@@ -31,12 +31,26 @@ class App {
   }
 
   middlewares() {
+    const whitelistedWebsite = [
+      'http://nadiacairo.com.br',
+      'http://www.nadiacairo.com.br',
+      'https://nadiacairo.com.br',
+      'https://www.nadiacairo.com.br',
+    ];
     this.server.use(Sentry.Handlers.requestHandler());
     this.server.use(helmet());
     this.server.use(
-      cors({
-        // origin: 'https://link.com',
-      })
+      cors(process.env.NODE_ENV === 'development')
+        ? {}
+        : {
+            origin(origin, callback) {
+              if (whitelistedWebsite.indexOf(origin) !== -1) {
+                callback(null, true);
+              } else {
+                callback(new Error('Not allowed by CORS'));
+              }
+            },
+          }
     );
     this.server.use(express.json());
 
