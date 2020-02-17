@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
@@ -8,7 +9,9 @@ class SessionController {
   async store(req, res) {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: { email: { [Sequelize.Op.iLike]: email } },
+    });
     const { id, name, active, admin } = user;
 
     if (!user) {
