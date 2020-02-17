@@ -40,17 +40,19 @@ class App {
     this.server.use(Sentry.Handlers.requestHandler());
     this.server.use(helmet());
     this.server.use(
-      cors(process.env.NODE_ENV === 'development')
-        ? {}
-        : {
-            origin(origin, callback) {
-              if (whitelistedWebsite.indexOf(origin) !== -1) {
-                callback(null, true);
-              } else {
-                callback(new Error('Not allowed by CORS'));
-              }
-            },
-          }
+      cors(
+        process.env.NODE_ENV === 'development'
+          ? {}
+          : {
+              origin(origin, callback) {
+                if (whitelistedWebsite.indexOf(origin) !== -1) {
+                  callback(null, true);
+                } else {
+                  callback(new Error('Not allowed by CORS'));
+                }
+              },
+            }
+      )
     );
     this.server.use(express.json());
 
