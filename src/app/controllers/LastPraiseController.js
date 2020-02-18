@@ -23,6 +23,7 @@ class LastPraiseController {
         { model: Theme, as: 'theme', attributes: ['id', 'name'] },
         { model: Collection, as: 'collection', attributes: ['id', 'name'] },
       ],
+      order: [['created_at', 'DESC']],
       limit: 5,
     });
 
