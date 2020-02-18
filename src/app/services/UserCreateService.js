@@ -26,14 +26,6 @@ class UserCreateService {
 
     await Cache.invalidatePrefix('user:list');
     await Cache.invalidate(`user:count`);
-    await Cache.set(`user:${id}`, {
-      id,
-      name,
-      email,
-      active,
-      admin,
-      logs: [],
-    });
     return { id, name, email, active: false, admin: false };
   }
 }

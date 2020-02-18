@@ -17,7 +17,6 @@ class PraiseDeleteService {
     await Cache.invalidatePrefix(`theme:${praise.theme_id}`);
     await Cache.invalidatePrefix('praise:list');
     await Cache.invalidatePrefix('praise:search');
-    await Cache.invalidate(`user:${userId}`);
     await Cache.invalidatePrefix('user:list');
 
     await Changelog.create({

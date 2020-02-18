@@ -32,7 +32,6 @@ class UserAdminUpdateService {
       <p><span>Admin:<span> <small>${admin}</small></p>`,
     });
 
-    await Cache.invalidate(`user:${userId}`);
     await Cache.invalidatePrefix('user:list');
 
     return { id, name, email: newEmail, active, admin };

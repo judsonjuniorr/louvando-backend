@@ -47,7 +47,6 @@ class CollectionController {
       message: `<p><span>Coleção <strong>#${id} ${name}</strong> criada por #${req.userId} ${req.user.name}</span></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     const collection = await CollectionShowService.run({ id });
     return res.json(collection);
@@ -71,7 +70,6 @@ class CollectionController {
       <p><span>Name:<span> <small>${name}</small></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     await Cache.invalidatePrefix(`collection:${id}`);
     const updatedCollection = await CollectionShowService.run({ id });
@@ -121,7 +119,6 @@ class CollectionController {
       <p>Deletou a coleção <strong>${collection.name}</strong>:<br/></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     return res.json();
   }

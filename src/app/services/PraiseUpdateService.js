@@ -38,7 +38,6 @@ class PraiseUpdateService {
     await Cache.invalidatePrefix(`theme:${updatedPraise.theme_id}`);
     await Cache.invalidatePrefix('praise:list');
     await Cache.invalidatePrefix('praise:search');
-    await Cache.invalidate(`user:${userId}`);
     await Cache.invalidatePrefix('user:list');
 
     return updatedPraise;

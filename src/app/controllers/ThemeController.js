@@ -43,7 +43,6 @@ class ThemeController {
       message: `<p><span>Tema <strong>#${id} ${name}</strong> criado por #${req.userId} ${req.user.name}</span></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     const theme = await ThemeShowService.run({ id });
 
@@ -66,7 +65,6 @@ class ThemeController {
       <p><span>Name:<span> <small>${name}</small></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     await Cache.invalidatePrefix(`theme:${id}`);
     const updatedTheme = await ThemeShowService.run({ id });
@@ -115,7 +113,6 @@ class ThemeController {
       <p>Deletou o tema <strong>${theme.name}</strong>:<br/></p>`,
     });
 
-    await Cache.invalidate(`user:${req.userId}`);
     await Cache.invalidatePrefix('user:list');
     return res.json();
   }
