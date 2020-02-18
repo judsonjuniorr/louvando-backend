@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 import 'dotenv/config';
 
 import express from 'express';
@@ -31,28 +32,27 @@ class App {
   }
 
   middlewares() {
+    this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(helmet());
+
     const whitelistedWebsite = [
       'http://nadiacairo.com.br',
       'http://www.nadiacairo.com.br',
       'https://nadiacairo.com.br',
       'https://www.nadiacairo.com.br',
     ];
-    this.server.use(Sentry.Handlers.requestHandler());
-    this.server.use(helmet());
+    const corsOptions = {
+      // eslint-disable-next-line func-names
+      origin: function(origin, callback) {
+        if (whitelistedWebsite.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+    };
     this.server.use(
-      cors(
-        process.env.NODE_ENV === 'development'
-          ? {}
-          : {
-              origin(origin, callback) {
-                if (whitelistedWebsite.indexOf(origin) !== -1) {
-                  callback(null, true);
-                } else {
-                  callback(new Error('Not allowed by CORS'));
-                }
-              },
-            }
-      )
+      cors(process.env.NODE_ENV === 'development' ? {} : corsOptions)
     );
     this.server.use(express.json());
 
