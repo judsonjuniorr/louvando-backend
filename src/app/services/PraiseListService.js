@@ -48,7 +48,7 @@ class PraiseListService {
       limit: perPage,
       order: [
         ['collection_id', 'ASC'],
-        ['number', 'ASC'],
+        ['number', 'ASC NULLS FIRST'],
         ['created_at', 'ASC'],
       ],
       offset: (page - 1) * perPage,
