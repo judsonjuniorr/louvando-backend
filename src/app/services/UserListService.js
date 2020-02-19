@@ -1,6 +1,5 @@
 import User from '../models/User';
 
-import Cache from '../../lib/Cache';
 import Changelog from '../schemas/Changelog';
 
 import paginatedReturn from './paginatedReturn';
@@ -9,12 +8,7 @@ class UserListService {
   async run({ page = 1, perPage = 25 }) {
     perPage = perPage > 75 ? (perPage = 75) : perPage;
 
-    const cachedTotal = await Cache.get(`user:count`);
-    const totalUsers = cachedTotal || (await User.findAndCountAll()).count || 0;
-    if (!cachedTotal) await Cache.set(`user:count`, totalUsers);
-
-    const cached = await Cache.get(`user:list:${page}:${perPage}`);
-    if (cached) return cached;
+    const totalUsers = (await User.findAndCountAll()).count || 0;
 
     const usersFetch = await User.findAll({
       attributes: ['id', 'name', 'email', 'admin', 'active', 'created_at'],
@@ -36,7 +30,6 @@ class UserListService {
       ),
     });
 
-    await Cache.set(`user:list:${page}:${perPage}`, users);
     return users;
   }
 }

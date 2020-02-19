@@ -36,11 +36,8 @@ class PraiseCreateService {
 
     await Cache.set(`praise:count`, (await Praise.findAndCountAll()).count);
     await Cache.invalidate('praise:last');
-    await Cache.invalidatePrefix(`collection:${praise.collection_id}`);
-    await Cache.invalidatePrefix(`theme:${praise.theme_id}`);
     await Cache.invalidatePrefix('praise:list');
     await Cache.invalidatePrefix('praise:search');
-    await Cache.invalidatePrefix('user:list');
 
     return finalPraise;
   }

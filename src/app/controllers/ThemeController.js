@@ -4,8 +4,6 @@ import Theme from '../models/Theme';
 import Praise from '../models/Praise';
 import Changelog from '../schemas/Changelog';
 
-import Cache from '../../lib/Cache';
-
 import ThemeShowService from '../services/ThemeShowService';
 
 class ThemeController {
@@ -43,7 +41,6 @@ class ThemeController {
       message: `<p><span>Tema <strong>#${id} ${name}</strong> criado por #${req.userId} ${req.user.name}</span></p>`,
     });
 
-    await Cache.invalidatePrefix('user:list');
     const theme = await ThemeShowService.run({ id });
 
     return res.json(theme);
@@ -65,8 +62,6 @@ class ThemeController {
       <p><span>Name:<span> <small>${name}</small></p>`,
     });
 
-    await Cache.invalidatePrefix('user:list');
-    await Cache.invalidatePrefix(`theme:${id}`);
     const updatedTheme = await ThemeShowService.run({ id });
     return res.json(updatedTheme);
   }
@@ -75,35 +70,27 @@ class ThemeController {
     const { id } = req.params;
 
     const theme = await Theme.findByPk(id);
-    const cached = await Cache.get(`theme:${id}:1:25`);
 
     try {
-      if (cached && Number(cached.totalPraises) > 0) {
+      if (!theme) throw new Error('Theme not found');
+
+      const praises = Number(
+        (
+          await Praise.findAndCountAll({
+            where: { theme_id: theme.id },
+          })
+        ).count
+      );
+
+      if (praises > 0)
         throw new Error(
           `It's not possible to exclude a theme in which there is praise`
         );
-      } else {
-        if (!theme) throw new Error('Theme not found');
-
-        const praises = Number(
-          (
-            await Praise.findAndCountAll({
-              where: { theme_id: theme.id },
-            })
-          ).count
-        );
-
-        if (praises > 0)
-          throw new Error(
-            `It's not possible to exclude a theme in which there is praise`
-          );
-      }
     } catch (e) {
       return res.status(400).json({ error: e.message });
     }
 
     await theme.destroy();
-    await Cache.invalidatePrefix(`theme:${id}`);
 
     await Changelog.create({
       action: 'delete',
@@ -113,7 +100,6 @@ class ThemeController {
       <p>Deletou o tema <strong>${theme.name}</strong>:<br/></p>`,
     });
 
-    await Cache.invalidatePrefix('user:list');
     return res.json();
   }
 }

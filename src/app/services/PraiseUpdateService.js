@@ -32,13 +32,8 @@ class PraiseUpdateService {
     const updatedPraise = await PraiseShowService.run({ id });
 
     await Cache.invalidate('praise:last');
-    await Cache.invalidatePrefix(`collection:${praise.collection_id}`);
-    await Cache.invalidatePrefix(`collection:${updatedPraise.collection_id}`);
-    await Cache.invalidatePrefix(`theme:${praise.theme_id}`);
-    await Cache.invalidatePrefix(`theme:${updatedPraise.theme_id}`);
     await Cache.invalidatePrefix('praise:list');
     await Cache.invalidatePrefix('praise:search');
-    await Cache.invalidatePrefix('user:list');
 
     return updatedPraise;
   }

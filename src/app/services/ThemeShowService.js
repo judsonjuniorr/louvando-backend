@@ -4,15 +4,10 @@ import Theme from '../models/Theme';
 import Praise from '../models/Praise';
 import Collection from '../models/Collection';
 
-import Cache from '../../lib/Cache';
-
 import paginatedReturn from './paginatedReturn';
 
 class ThemeShowService {
   async run({ id, page = 1, perPage = 25 }) {
-    const cached = await Cache.get(`theme:${id}:${page}:${perPage}`);
-    if (cached) return cached;
-
     const theme = await Theme.findByPk(id, {
       attributes: [
         'id',
@@ -55,7 +50,7 @@ class ThemeShowService {
     const totalPraises =
       (await Praise.findAndCountAll({ where: { theme_id: id } })).count || 0;
 
-    const formattedReturn = {
+    return {
       ...theme,
       praises: paginatedReturn({
         page,
@@ -64,10 +59,6 @@ class ThemeShowService {
         data: praises,
       }),
     };
-
-    await Cache.set(`theme:${id}:${page}:${perPage}`, formattedReturn);
-
-    return formattedReturn;
   }
 }
 

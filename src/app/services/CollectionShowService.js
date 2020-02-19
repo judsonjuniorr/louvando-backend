@@ -4,15 +4,10 @@ import Collection from '../models/Collection';
 import Praise from '../models/Praise';
 import Theme from '../models/Theme';
 
-import Cache from '../../lib/Cache';
-
 import paginatedReturn from './paginatedReturn';
 
 class CollectionShowService {
   async run({ id, page = 1, perPage = 25 }) {
-    const cached = await Cache.get(`collection:${id}:${page}:${perPage}`);
-    if (cached) return cached;
-
     const collection = await Collection.findByPk(id, {
       attributes: [
         'id',
@@ -56,7 +51,7 @@ class CollectionShowService {
       (await Praise.findAndCountAll({ where: { collection_id: id } })).count ||
       0;
 
-    const formattedReturn = {
+    return {
       ...collection,
       praises: paginatedReturn({
         page,
@@ -65,10 +60,6 @@ class CollectionShowService {
         data: praises,
       }),
     };
-
-    await Cache.set(`collection:${id}:${page}:${perPage}`, formattedReturn);
-
-    return formattedReturn;
   }
 }
 

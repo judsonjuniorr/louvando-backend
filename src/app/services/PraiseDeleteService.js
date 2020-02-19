@@ -13,11 +13,8 @@ class PraiseDeleteService {
     await Cache.invalidate(`praise:count`);
     await Cache.invalidate('praise:last');
 
-    await Cache.invalidatePrefix(`collection:${praise.collection_id}`);
-    await Cache.invalidatePrefix(`theme:${praise.theme_id}`);
     await Cache.invalidatePrefix('praise:list');
     await Cache.invalidatePrefix('praise:search');
-    await Cache.invalidatePrefix('user:list');
 
     await Changelog.create({
       action: 'delete',

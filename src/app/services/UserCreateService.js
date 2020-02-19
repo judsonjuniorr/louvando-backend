@@ -1,5 +1,4 @@
 import User from '../models/User';
-import Cache from '../../lib/Cache';
 
 import Changelog from '../schemas/Changelog';
 
@@ -24,8 +23,6 @@ class UserCreateService {
       <p><span>Admin:<span> <small>${admin}</small></p>`,
     });
 
-    await Cache.invalidatePrefix('user:list');
-    await Cache.invalidate(`user:count`);
     return { id, name, email, active: false, admin: false };
   }
 }

@@ -1,5 +1,4 @@
 import User from '../models/User';
-import Cache from '../../lib/Cache';
 
 import Changelog from '../schemas/Changelog';
 
@@ -36,8 +35,6 @@ class UserUpdateService {
       <p><span>Active:<span> <small>${active}</small></p>
       <p><span>Admin:<span> <small>${admin}</small></p>`,
     });
-
-    await Cache.invalidatePrefix('user:list');
 
     return { id, name, email: newEmail, active, admin };
   }

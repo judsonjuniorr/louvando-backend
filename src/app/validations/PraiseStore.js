@@ -2,18 +2,13 @@ import * as Yup from 'yup';
 import Collection from '../models/Collection';
 import Theme from '../models/Theme';
 
-import Cache from '../../lib/Cache';
 import errorMessage from './errorMessage';
 
 const checkCollection = async id => {
-  const cached = await Cache.get(`collection:${id}`);
-  if (cached) return true;
   return !!(await Collection.findByPk(id));
 };
 
 const checkTheme = async id => {
-  const cached = await Cache.get(`theme:${id}`);
-  if (cached) return true;
   return !!(await Theme.findByPk(id));
 };
 
