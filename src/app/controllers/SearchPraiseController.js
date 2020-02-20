@@ -42,6 +42,28 @@ class SearchPraiseController {
       ],
       raw: true,
     };
+
+    // eslint-disable-next-line no-restricted-globals
+    if (!isNaN(+query)) {
+      const numberPraise = await Praise.findAll({
+        ...attr,
+        where: { number: Number(query) },
+      });
+
+      const praisesReturn = paginatedReturn({
+        page,
+        perPage,
+        total: numberPraise.length,
+        data: numberPraise,
+      });
+
+      await Cache.set(
+        `praise:search:${query}:${page}:${perPage}`,
+        numberPraise
+      );
+      return res.json(praisesReturn);
+    }
+
     const titlePraise = await Praise.findAll({
       ...attr,
       where: {
