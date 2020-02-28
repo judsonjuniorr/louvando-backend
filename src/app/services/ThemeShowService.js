@@ -44,6 +44,11 @@ class ThemeShowService {
           attributes: ['id', 'name'],
         },
       ],
+      order: [
+        ['collection_id', 'ASC'],
+        ['number', 'ASC NULLS FIRST'],
+        ['created_at', 'ASC'],
+      ],
       limit: perPage,
       offset: (page - 1) * perPage,
     });
