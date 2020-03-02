@@ -22,7 +22,7 @@ class ThemeShowService {
     if (!theme) return null;
 
     const praises = await Praise.findAll({
-      where: { collection_id: id },
+      where: { theme_id: id },
       attributes: [
         'id',
         'number',
