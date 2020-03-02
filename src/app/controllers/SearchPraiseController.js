@@ -59,7 +59,7 @@ class SearchPraiseController {
 
       await Cache.set(
         `praise:search:${query}:${page}:${perPage}`,
-        numberPraise
+        praisesReturn
       );
       return res.json(praisesReturn);
     }
