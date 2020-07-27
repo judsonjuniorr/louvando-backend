@@ -36,10 +36,8 @@ class App {
     this.server.use(helmet());
 
     const whitelistedWebsite = [
-      'http://nadiacairo.com.br',
-      'http://www.nadiacairo.com.br',
-      'https://nadiacairo.com.br',
-      'https://www.nadiacairo.com.br',
+      'http://louvando.judsonjunior.com',
+      'https://louvando.judsonjunior.com.br',
     ];
     const corsOptions = {
       // eslint-disable-next-line func-names
