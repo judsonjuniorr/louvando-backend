@@ -37,7 +37,7 @@ class App {
 
     const whitelistedWebsite = [
       'http://louvando.judsonjunior.com',
-      'https://louvando.judsonjunior.com.br',
+      'https://louvando.judsonjunior.com',
     ];
     const corsOptions = {
       // eslint-disable-next-line func-names
